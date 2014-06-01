@@ -127,7 +127,7 @@ function QuoteDelim(char)
  endif
 endf
 let g:DoxygenToolkit_authorName="liuxy"
-""let g:DoxygenToolkit_authorEmail ="337233314@qq.com"
+""let g:DoxygenToolkit_authorEmail ="email@gmail.com"
 ""let s:licenseTag = "******************Copyright(C)**************\<enter>"
 ""let s:licenseTag = s:licenseTag . "All right reserved\<enter>"
 ""let g:DoxygenToolkit_licenseTag = s:licenseTag
