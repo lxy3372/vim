@@ -1,4 +1,40 @@
-set nocompatible
+set nocompatible               " be iMproved  
+filetype on " required!  
+  
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
+
+  
+ " let Vundle manage Vundle  
+ " required!  
+ Bundle 'gmarik/vundle'  
+ " My Bundles here:  
+ "  
+ " original repos on github  
+ Bundle 'tpope/vim-fugitive'  
+ Bundle 'Lokaltog/vim-easymotion'  
+ Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}  
+ Bundle 'tpope/vim-rails.git'  
+ " non github repos  
+ Bundle 'git://git.wincent.com/command-t.git'  
+ Bundle 'netrw.vim'
+ Bundle 'DrawIt'
+ Bundle 'CCTree'
+ Bundle 'ctrlp.vim'
+ Bundle 'InsertList'
+ "Bundle 'commentary'
+ Bundle 'tpope/vim-commentary'
+ Bundle 'taglist.vim'
+
+ "config"
+ let Tlist_Show_One_File=1
+ let Tlist_Exit_OnlyWindow=1
+ 
+
+ filetype plugin indent on     " required!  
+
+ autocmd FileType apache set commentstring=#\ %s
+ 
 
 "加入行号"
 set nu
@@ -14,6 +50,7 @@ set noexpandtab
 set cursorcolumn
 "行高亮"
 set cursorline
+set ruler
 set smarttab
 "设置不生成缓存"
 set nobackup
@@ -21,6 +58,7 @@ set nowritebackup
 ""设置工作目录为当前目录
 set bsdir=buffer
 
+set background=dark
 set autochdir
 ""逐行搜索高亮
 set incsearch
@@ -69,7 +107,7 @@ function MyDiff()
 endfunction
 
 function AddPHPFuncList()
-    set dictionary-=~/.vim/extra/php_funclist.txt
+	set dictionary-=~/.vim/extra/php_funclist.txt dictionary+=~/.vim/extra/php_funclist.txt
     set complete-=k complete+=k
 endfunction
 au filetype php call AddPHPFuncList()
@@ -85,10 +123,9 @@ autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType c set omnifunc=ccomplete#Complete
 
 
-
+inoremap { {<CR>}<Esc>O
 inoremap ( ()<Esc>i
 inoremap [ []<Esc>i
-inoremap { {<CR>}<Esc>O
 autocmd Syntax html,vim inoremap < <lt>><Esc>i| inoremap > <c-r>=ClosePair('>')<CR>
 inoremap ) <c-r>=ClosePair(')')<CR>
 inoremap ] <c-r>=ClosePair(']')<CR>
@@ -126,8 +163,8 @@ function QuoteDelim(char)
  return a:char.a:char."\<Esc>i"
  endif
 endf
-let g:DoxygenToolkit_authorName="liuxy"
-""let g:DoxygenToolkit_authorEmail ="email@gmail.com"
+let g:DoxygenToolkit_authorName="chdxy"
+""let g:DoxygenToolkit_authorEmail ="lxy3372@gmail.com"
 ""let s:licenseTag = "******************Copyright(C)**************\<enter>"
 ""let s:licenseTag = s:licenseTag . "All right reserved\<enter>"
 ""let g:DoxygenToolkit_licenseTag = s:licenseTag
@@ -158,7 +195,7 @@ function! CheckPHPSyntax()
     echohl WarningMsg | echo 'Syntax checking output:' | echohl None
     if &modified == 1
         silent write
-    endif.vimrc
+    endif
     silent make
     clist
 endfunction
@@ -179,7 +216,7 @@ function! CheckPythonSyntax()
     endif
     exec "silent make -c \"import py_compile;py_compile.compile(r'".bufname("%")."')\""
     clist
-endfunction.vimrc
+endfunction
 au filetype python map <F5> :call CheckPythonSyntax()<CR>
 au filetype python imap <F5> <ESC>:call CheckPythonSyntax()<CR>
 
@@ -187,40 +224,3 @@ au filetype python imap <F5> <ESC>:call CheckPythonSyntax()<CR>
 let g:tagbar_width=20
 let g:tagbar_sort=0
 noremap <F9> :TagbarToggle<CR>
-set nocompatible               " be iMproved  
- filetype off                   " required!  
-  
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
-
-  
- " let Vundle manage Vundle  
- " required!  
- Bundle 'gmarik/vundle'  
- " My Bundles here:  
- "  
- " original repos on github  
- Bundle 'tpope/vim-fugitive'  
- Bundle 'Lokaltog/vim-easymotion'  
- Bundle 'rstacruz/sparkup', {'rtp': 'vim/'}  
- Bundle 'tpope/vim-rails.git'  
- " non github repos  
- Bundle 'git://git.wincent.com/command-t.git'  
- Bundle 'netrw.vim'
- Bundle 'DrawIt'
- Bundle 'CCTree'
- Bundle 'ctrlp.vim'
- Bundle 'InsertList'
- "Bundle 'commentary'
- Bundle 'tpope/vim-commentary'
- Bundle 'taglist.vim'
-
- "config"
- let Tlist_Show_One_File=1
- let Tlist_Exit_OnlyWindow=1
- 
-
- filetype plugin indent on     " required!  
-
- autocmd FileType apache set commentstring=#\ %s
- 
