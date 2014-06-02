@@ -110,8 +110,14 @@ function AddPHPFuncList()
 	set dictionary-=~/.vim/extra/php_funclist.txt dictionary+=~/.vim/extra/php_funclist.txt
     set complete-=k complete+=k
 endfunction
+function AddCssFuncList()
+	set dictionary-=~/.vim/extra/css_funclist.txt dictionary+=~/.vim/extra/css_funclist.txt
+    set complete-=k complete+=k
+endfunction
+
 au filetype php call AddPHPFuncList()
-au filetype html call AddPHPFuncList()
+au filetype css call AddCssFuncList()
+au filetype html call AddCssFuncList()
 
 set autoindent
 autocmd FileType python set omnifunc=pythoncomplete#Complete
@@ -122,8 +128,8 @@ autocmd FileType xml set omnifunc=xmlcomplete#CompleteTags
 autocmd FileType php set omnifunc=phpcomplete#CompletePHP
 autocmd FileType c set omnifunc=ccomplete#Complete
 
-
-inoremap { {<CR>}<Esc>O
+autocmd Syntax php,css,js inoremap { {<CR>}<Esc>O
+autocmd Syntax html,python inoremap { {}<Esc>i
 inoremap ( ()<Esc>i
 inoremap [ []<Esc>i
 autocmd Syntax html,vim inoremap < <lt>><Esc>i| inoremap > <c-r>=ClosePair('>')<CR>
