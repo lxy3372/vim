@@ -1,0 +1,190 @@
+set nocompatible               " be iMproved  
+set noerrorbells      
+set showmatch
+set scrolloff=3
+set laststatus=2
+filetype on " required!  
+  
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+"plugin
+Plugin 'vim-airline'
+Plugin 'gmarik/Vundle.vim'
+Bundle 'vim-wakatime'
+Plugin 'nerdtree'
+Plugin 'taglist-plus'
+Plugin 'neocomplcache'
+"Bundle 'Valloric/YouCompleteMe'
+Plugin 'DoxygenToolkit.vim'
+call vundle#end()            " required
+filetype plugin indent on    " required
+
+"加入行号"
+set nu
+set fileformats=unix,dos
+set cpo+=n
+"tab 4"
+set tabstop=4
+"自动缩进"
+set autoindent
+set softtabstop=4
+set shiftwidth=4
+set noexpandtab
+"列高亮"
+set cursorcolumn
+"行高亮"
+set cursorline
+set ruler
+set smarttab
+"设置不生成缓存"
+set nobackup
+set nowritebackup
+""设置工作目录为当前目录
+set bsdir=buffer
+"工作目录随文件变动
+autocmd BufEnter * cd %:p:h
+
+" 设置自动缩进
+set ai! 
+set background=dark
+"80列高亮
+se cc=100
+set autochdir
+""逐行搜索高亮
+set incsearch
+""搜索忽略大小写
+set ignorecase
+"设置临时文件目录"
+set noswapfile
+set diffexpr=MyDiff()
+"代码折叠 "
+set foldmethod=syntax
+set encoding=utf-8
+set fileencodings=ucs-bom,utf-8,gbk,cp936,latin-1
+set fileencoding=utf-8
+set termencoding=utf-8
+se guifont=Monaco:h12 
+"set guifont=Bitstream\ Vera\ Sans\ Mono\ :15
+"set langmenu=zh_CN.UTF-8"
+source $VIMRUNTIME/vimrc_example.vim
+source $VIMRUNTIME/mswin.vim
+behave mswin
+colorscheme desert
+"colorscheme solarized
+syntax enable
+syntax on
+function MyDiff()
+  let opt = '-a --binary '
+  if &diffopt =~ 'icase' | let opt = opt . '-i ' | endif
+  if &diffopt =~ 'iwhite' | let opt = opt . '-b ' | endif
+  let arg1 = v:fname_in
+  if arg1 =~ ' ' | let arg1 = '"' . arg1 . '"' | endif
+  let arg2 = v:fname_new
+  if arg2 =~ ' ' | let arg2 = '"' . arg2 . '"' | endif
+  let arg3 = v:fname_out
+  if arg3 =~ ' ' | let arg3 = '"' . arg3 . '"' | endif
+  let eq = ''
+  if $VIMRUNTIME =~ ' '
+    if &sh =~ '\<cmd'
+      let cmd = '""' . $VIMRUNTIME . '\diff"'
+      let eq = '"'
+    else
+      let cmd = substitute($VIMRUNTIME, ' ', '" ', '') . '\diff"'
+    endif
+  else
+    let cmd = $VIMRUNTIME . '\diff'
+  endif
+  silent execute '!' . cmd . ' ' . opt . arg1 . ' ' . arg2 . ' > ' . arg3 . eq
+endfunction
+
+function AddPHPFuncList()
+	set dictionary-=~/.vim/php_function.txt dictionary+=~/.vim/php_function.txt
+	set complete-=k complete+=k
+endfunction
+au FileType php call AddPHPFuncList()
+
+autocmd FileType php set omnifunc=phpcomplete#CompletePHP
+
+autocmd Syntax php,css,js inoremap { {<CR>}<Esc>O
+autocmd Syntax html,python inoremap { {}<Esc>i
+
+inoremap ( ()<Esc>i
+inoremap [ []<Esc>i
+autocmd Syntax html,vim inoremap < <lt>><Esc>i| inoremap > <c-r>=ClosePair('>')<CR>
+inoremap ) <c-r>=ClosePair(')')<CR>
+inoremap ] <c-r>=ClosePair(']')<CR>
+inoremap } <c-r>=CloseBracket()<CR>
+inoremap " <c-r>=QuoteDelim('"')<CR>
+inoremap ' <c-r>=QuoteDelim("'")<CR>
+ 
+function ClosePair(char)
+ if getline('.')[col('.') - 1] == a:char
+ return "\<Right>"
+ else
+ return a:char
+ endif
+endf
+ 
+function CloseBracket()
+ if match(getline(line('.') + 1), '\s*}') < 0
+ return "\<CR>}"
+ else
+ return "\<Esc>j0f}a"
+ endif
+endf
+ 
+function QuoteDelim(char)
+ let line = getline('.')
+ let col = col('.')
+ if line[col - 2] == "\\"
+ "Inserting a quoted quotation mark into the string
+ return a:char
+ elseif line[col - 1] == a:char
+ "Escaping out of the string
+ return "\<Right>"
+ else
+ "Starting a string
+ return a:char.a:char."\<Esc>i"
+ endif
+endf
+
+"nerd tree
+map <C-n> :NERDTreeToggle<cr>
+let g:NERDTreeDirArrowExpandable = '▸'
+let g:NERDTreeDirArrowCollapsible = '▾'
+let NERDTreeWinSize=25
+let NERDChristmasTree=1
+let NERDTreeAutoCenter=1
+
+"Taglist
+map <C-l> :TlistToggle<cr>
+let Tlist_Show_One_File=1
+let Tlist_Exit_OnlyWindow=1
+let Tlist_Use_Right_Window = 1         "在右侧窗口中显示taglist窗口
+
+"Doxygen
+let g:DoxygenToolkit_briefTag_pre="@brief "
+let g:DoxygenToolkit_briefTag_funcName = "yes"
+let g:DoxygenToolkit_paramTag_pre="@param "
+let g:DoxygenToolkit_returnTag="@return "
+let g:DoxygenToolkit_authorName="Ricky"
+
+"neocomplate
+let g:neocomplcache_enable_at_startup = 1
+let g:neocomplcache_min_syntax_length = 3
+" Enable omni completion.
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
+autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
+autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
+
+"UltiSnips
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+let g:ycm_error_symbol = '>>'
+let g:ycm_warning_symbol = '>*'
+
+" 配置文件.vimrc更改后自动重新载入使设置生效
+"autocmd! bufwritepost .vimrc source ~/.vimrc 
